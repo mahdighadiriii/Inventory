@@ -51,26 +51,28 @@ class Site(models.Model):
 
 
 class DataCenter(models.Model):
+    name = models.CharField(max_length=255, unique=True)
+    
     site = models.ForeignKey("Site", on_delete=models.CASCADE)
-    room = models.ForeignKey("Room", on_delete=models.CASCADE, blank=True,null=True,)
+    
     security_level = models.PositiveIntegerField()
 
     def __str__(self):
-        return str(self.site)
+        return str(self.name)
 
 
 
-class Room(models.Model):
-    name = models.CharField(max_length=255)
-    data_center = models.ForeignKey("DataCenter", on_delete=models.CASCADE, related_name='rooms')
+# class Room(models.Model):
+#     name = models.CharField(max_length=255)
+#     data_center = models.ForeignKey("DataCenter", on_delete=models.CASCADE)
 
-    def __str__(self):
-        return f"{self.name} ({self.data_center})"
+#     def __str__(self):
+#         return f"{self.name} ({self.data_center})"
 
 
 
 class Rack(models.Model):
-    data_center = models.ForeignKey("DataCenter", on_delete=models.CASCADE)
+    DataCenter = models.ForeignKey("DataCenter", to_field="name", on_delete=models.CASCADE)
     
     rack_number = models.PositiveBigIntegerField()
     rack_height = models.PositiveBigIntegerField()
@@ -79,7 +81,7 @@ class Rack(models.Model):
     rack_capacity = models.PositiveBigIntegerField()
 
     def __str__(self):
-        return f"Rack {self.rack_number} ({self.data_center})"
+        return f"Rack {self.rack_number} ({self.DataCenter.name})"
     
 
 class Device(models.Model):

@@ -1,5 +1,5 @@
 from django.contrib import admin
-from .models import Post, Category, Site, DataCenter, Room, Rack, Device, Power, DieselGenerator
+from .models import Post, Category, Site, DataCenter, Rack, Device, Power, DieselGenerator
 
 # Register your models here.
 
@@ -27,6 +27,7 @@ class SiteAdmin(admin.ModelAdmin):
 class DataCenterAdmin(admin.ModelAdmin):
     
     list_display = [
+        "name",
         "site",
         "security_level",
     ]
@@ -44,7 +45,7 @@ class RoomAdmin(admin.ModelAdmin):
 class RackAdmin(admin.ModelAdmin):
 
     list_display = [
-        "data_center",
+        "DataCenter",
         "rack_number",
         "rack_height",
         "rack_width",
@@ -66,7 +67,7 @@ class DeviceAdmin(admin.ModelAdmin):
 
 admin.site.register(Site,SiteAdmin)
 admin.site.register(DataCenter,DataCenterAdmin)
-admin.site.register(Room,RoomAdmin)
+
 admin.site.register(Rack,RackAdmin)
 admin.site.register(Device,DeviceAdmin)
 
