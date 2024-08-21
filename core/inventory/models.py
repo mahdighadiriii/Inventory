@@ -52,36 +52,36 @@ class Site(models.Model):
 
 class DataCenter(models.Model):
     name = models.CharField(max_length=255, unique=True)
-    
-    site = models.ForeignKey("Site", on_delete=models.CASCADE)
-    
-    security_level = models.PositiveIntegerField()
+    site = models.ForeignKey(Site, on_delete=models.CASCADE)
+    security_level = models.PositiveBigIntegerField(null=True, blank=True)
+    created_date = models.DateTimeField(auto_now_add=True)
+    updated_date = models.DateTimeField(auto_now=True)
 
     def __str__(self):
         return str(self.name)
+    
 
 
-
-# class Room(models.Model):
-#     name = models.CharField(max_length=255)
-#     data_center = models.ForeignKey("DataCenter", on_delete=models.CASCADE)
-
-#     def __str__(self):
-#         return f"{self.name} ({self.data_center})"
-
+class Room(models.Model):
+    name = models.CharField(max_length=255)
+    data_center = models.ForeignKey(DataCenter, to_field="name",on_delete=models.CASCADE)
+    
 
 
 class Rack(models.Model):
-    DataCenter = models.ForeignKey("DataCenter", to_field="name", on_delete=models.CASCADE)
-    
+    name = models.CharField(max_length=255)
+    data_center = models.ForeignKey(DataCenter, to_field="name",on_delete=models.CASCADE)
     rack_number = models.PositiveBigIntegerField()
-    rack_height = models.PositiveBigIntegerField()
-    rack_width = models.PositiveBigIntegerField()
-    rack_depth = models.PositiveBigIntegerField()
-    rack_capacity = models.PositiveBigIntegerField()
+    rack_height = models.PositiveBigIntegerField(null=True, blank=True)
+    rack_width = models.PositiveBigIntegerField(null=True, blank=True)
+    rack_depth = models.PositiveBigIntegerField(null=True, blank=True)
+    rack_capacity = models.PositiveBigIntegerField(null=True, blank=True)
+    created_date = models.DateTimeField(auto_now_add=True)
+    updated_date = models.DateTimeField(auto_now=True)
 
     def __str__(self):
-        return f"Rack {self.rack_number} ({self.DataCenter.name})"
+        return f"Rack {self.rack_number} ({self.data_center.name})"
+
     
 
 class Device(models.Model):
